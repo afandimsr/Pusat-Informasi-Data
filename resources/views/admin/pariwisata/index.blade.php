@@ -1,0 +1,48 @@
+@extends('../../layouts.admin-layout')
+@section('title','Data Pengunjung Wisata Kota Semarang')
+@section('admin-content')
+        <div class="container ml-5">
+        
+            <div class="row">
+                <div class="col-md-10">
+                    <h1>Data Pengunjung Wisata Kota Semarang</h1><a href="{{ route('admin.par_pariwisata_add')}}" class="btn btn-primary mb-4"> <i class="fa fa-plus"></i> Tambah Data</a>
+                    @if (session('status'))
+                            <div class="alert alert-success mt-2">
+                                {{ session('status') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                        @endif
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Tahun</th>
+                            <th scope="col">Nama Wisata</th>
+                            <th scope="col">Jumlah Wisatawan</th>
+                            <th scope="col">Action</th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($pariwisatas as $pariwisata)
+                       <tr>
+                           <td>{{$loop->iteration}}</td>
+                           <td>{{$pariwisata->tahun}}</td>
+                           <td>{{$pariwisata->nama_wisata}}</td>
+                           <td>{{$pariwisata->jumlah_wisatawan}}</td>
+                           <td><a href="{{route('admin.pariwisata.edit',$pariwisata->id)}}" class="btn btn-success"><i class="fa fa-edit"></i> Edit</a>
+                            <form action="{{route('admin.pariwisata.destroy',$pariwisata->id)}}" method="post" style="display:inline;">
+                            @csrf
+                            @method('delete')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('yakin ingin hapus ?')"> <i class="fa fa-trash"></i> Delete</button>
+                            </form>
+                           </td>
+                       </tr>
+                       @endforeach
+                       
+                        </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+@endsection
